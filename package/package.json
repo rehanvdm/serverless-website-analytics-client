@@ -44,6 +44,7 @@
     "@semantic-release/release-notes-generator": "10.0.3",
     "@types/node": "^18.14.0",
     "@types/yargs": "^17.0.22",
+    "conventional-changelog-conventionalcommits": "^5.0.0",
     "esbuild": "^0.17.10",
     "esbuild-runner": "^2.2.2",
     "execa": "5.1.1",
