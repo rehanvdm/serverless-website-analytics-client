@@ -3,8 +3,14 @@ import yargs from "yargs"
 import {hideBin} from "yargs/helpers"
 import { generateApi } from "swagger-typescript-api";
 import fs from "fs/promises";
-import * as esbuild from "esbuild";
+// import * as esbuild from "esbuild";
+import { rollup } from 'rollup';
 import {command as execaCommand, ExecaReturnValue} from "execa";
+import nodeResolve from "@rollup/plugin-node-resolve";
+import typescript from '@rollup/plugin-typescript';
+import terser from "@rollup/plugin-terser";
+// import typescript from 'rollup-plugin-typescript2';
+// import tsconfig from "./tsconfig.json"
 
 const paths = {
   localPackages: path.resolve(__dirname + "/node_modules/.bin"),
@@ -14,6 +20,8 @@ const paths = {
   srcInput: path.resolve(__dirname+"/src/index.ts"),
   openApiSpec: path.resolve(__dirname+"/src/OpenAPI-Ingest.yaml"),
   dist: path.resolve(__dirname+"/dist"),
+  distOutputCjs: path.resolve(__dirname+"/dist/index.js"),
+  distOutputEsm: path.resolve(__dirname+"/dist/index.mjs"),
 }
 
 
@@ -76,6 +84,7 @@ async function build()
 {
   console.time("* BUILD");
 
+  console.log("** Clean");
   let packageFolderExist = await folderExists(paths.dist);
   if(!packageFolderExist) //create
     await fs.mkdir(paths.dist,{ recursive: true });
@@ -85,28 +94,33 @@ async function build()
     await fs.mkdir(paths.dist,{ recursive: true });
   }
 
+
   console.log("** Bundling");
-  await esbuild.build({
-    bundle: true,
-    logLevel: "error",
-    target: ["node16"],
-    entryPoints: [ paths.srcInput ],
-    platform: 'node',
-    outdir: paths.dist,
+  const bundle = await rollup({
+    input: paths.srcInput,
+    plugins: [
+      typescript({}),
+      nodeResolve({
+        browser: true,
+      }),
+      terser({sourceMap: true}),
+    ]
   });
+  //@ts-ignore because sourcemap is specified correctly https://github.com/terser/terser#source-map-options
+  await bundle.write({ file: paths.distOutputCjs, format: 'cjs', sourcemap: { filename: "out.js", url: "out.js.map"} });
+  //@ts-ignore because sourcemap is specified correctly https://github.com/terser/terser#source-map-options
+  await bundle.write({ file: paths.distOutputEsm, format: 'esm', sourcemap: { filename: "out.mjs", url: "out.mjs.map"} });
+
 
   console.log("** Generate types - d.ts");
   await execaCommand("tsc --declaration  --emitDeclarationOnly "+paths.srcInput+" " +
-                               "--outDir "+paths.dist, { reject: true });
+    "--outDir "+paths.dist, { reject: true });
 
   console.log("** Coping files");
   await fs.copyFile(paths.workingDir+"/package.json", paths.dist+"/package.json");
   await fs.copyFile(paths.topLevelDir+"/README.md", paths.dist+"/README.md");
 
+
   console.timeEnd("* BUILD");
-}
-
-async function generateApiSchemaTs(openApiPath: string, outputPath: string, outputFileName: string) {
-
 }
 

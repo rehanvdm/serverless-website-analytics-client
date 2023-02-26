@@ -1,4 +1,33 @@
-# Package src
+# Serverless Website Analytics Client
+
+## Usage
+
+### Install
+
+```
+npm install serverless-website-analytics-client
+```
+
+### Vue
+
+Initialize and
+
+```typescript
+import * as swaClient from 'serverless-website-analytics-client'
+
+const inBrowser = true; //Not SSR
+const apiUrl = "https://d3nhr87nci4rd5.cloudfront.net";
+const siteName = "vue-project";
+const debug = false;
+swaClient.v1.analyticsPageInit(inBrowser, siteName, apiUrl, debug);
+router.afterEach((event) => {
+  swaClient.v1.analyticsPageChange(event.path);
+});
+
+```
+
+
+## Package src
 
 
 
