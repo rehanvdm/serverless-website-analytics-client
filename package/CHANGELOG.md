@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/rehanvdm/serverless-website-analytics-client-development/compare/v1.0.0...v1.1.0) (2023-02-26)
+
+
+### Features
+
+* fix packaing for esm and cjs ([b199c29](https://github.com/rehanvdm/serverless-website-analytics-client-development/commit/b199c295239c89ceca0aa6df44b67f3a25e2c05b))
+
 ## 1.0.0 (2023-02-26)
 
 
