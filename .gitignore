@@ -1,0 +1,5 @@
+.vscode
+.idea
+.wireit
+node_modules
+dist

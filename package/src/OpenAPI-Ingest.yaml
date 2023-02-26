@@ -1,0 +1,92 @@
+openapi: 3.0.3
+info:
+  title: Serverless Website Analytics Ingest API
+  version: '-'
+servers:
+  - url: '-'
+paths:
+  /v1/page/track:
+    post:
+      operationId: mutation.v1PageTrack
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                site:
+                  type: string
+                user_id:
+                  type: string
+                session_id:
+                  type: string
+                page_id:
+                  type: string
+                page_url:
+                  type: string
+                page_opened_at:
+                  type: string
+                time_on_page:
+                  type: number
+                utm_source:
+                  type: string
+                utm_medium:
+                  type: string
+                utm_campaign:
+                  type: string
+                utm_term:
+                  type: string
+                utm_content:
+                  type: string
+                querystring:
+                  type: string
+              required:
+                - site
+                - user_id
+                - session_id
+                - page_id
+                - page_url
+                - page_opened_at
+                - time_on_page
+              additionalProperties: false
+      parameters: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema: {}
+        default:
+          $ref: '#/components/responses/error'
+components:
+  securitySchemes:
+    Authorization:
+      type: http
+      scheme: bearer
+  responses:
+    error:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              code:
+                type: string
+              issues:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                  required:
+                    - message
+                  additionalProperties: false
+            required:
+              - message
+              - code
+            additionalProperties: false

@@ -1,0 +1,50 @@
+name: 'Release'
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'package/**'
+
+defaults:
+  run:
+    working-directory: ./package
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          # Otherwise the token this creates(?) overrides the workflow generated one
+          # https://github.com/semantic-release/semantic-release/blob/master/docs/recipes/ci-configurations/github-actions.md#pushing-packagejson-changes-to-a-master-branch
+          persist-credentials: false
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm install
+      - run: npm run package
+      - uses: actions/cache@v3
+        with:
+         path: ./
+         key: ${{ github.sha }}
+
+  release:
+    needs: build
+    permissions:
+      # Required to make a commit with the contents of the build output, the /dist folder
+      contents: write
+      # Required to close any issues that was referenced in the PR
+      issues: write
+      # Read PRs and comment on them
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/cache@v3
+        with:
+          path: ./
+          key: ${{ github.sha }}
+      - run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_NPM_TOKEN }}
