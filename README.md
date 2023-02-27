@@ -33,8 +33,8 @@ app.use(router);
 
 swaClient.v1.analyticsPageInit({
   inBrowser: true, //Not SSR
-  site: "vue-project",
-  apiUrl: "https://d3nhr87nci4rd5.cloudfront.net",
+  site: "<Friendly site name>", //vue-project
+  apiUrl: "<Your serverless-website-analytics URL>", //https://my-serverless-website-analytics-backend.com
   // debug: true,
 });
 router.afterEach((event) => {
