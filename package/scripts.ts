@@ -3,14 +3,12 @@ import yargs from "yargs"
 import {hideBin} from "yargs/helpers"
 import { generateApi } from "swagger-typescript-api";
 import fs from "fs/promises";
-// import * as esbuild from "esbuild";
 import { rollup } from 'rollup';
 import {command as execaCommand, ExecaReturnValue} from "execa";
 import nodeResolve from "@rollup/plugin-node-resolve";
 import typescript from '@rollup/plugin-typescript';
 import terser from "@rollup/plugin-terser";
-// import typescript from 'rollup-plugin-typescript2';
-// import tsconfig from "./tsconfig.json"
+
 
 const paths = {
   localPackages: path.resolve(__dirname + "/node_modules/.bin"),

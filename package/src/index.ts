@@ -49,20 +49,40 @@ export namespace v1
     // });
   }
 
+
+  type InitOptions = {
+    /**
+     * If SSR set this to false
+     */
+    inBrowser: boolean,
+
+    /**
+     * The site name to send analytics as
+     */
+    site: string,
+
+    /**
+     * The API URL
+     */
+    apiUrl: string,
+
+    /**
+     * Prints debug messages if enabled
+     */
+    debug?: boolean
+  }
+
   /**
    * Init the client only once
-   * @param inBrowser If SSR set this to false
-   * @param site The site name to send analytics as
-   * @param apiUrl The API URL
-   * @param debug Prints debug messages if enabled
+   * @param initOptions
    */
-  export function analyticsPageInit(inBrowser: boolean, site: string, apiUrl: string, debug: boolean = false)
+  export function analyticsPageInit(initOptions: InitOptions)
   {
     global = {
-      inBrowser,
-      site,
-      apiUrl,
-      debug
+      inBrowser: initOptions.inBrowser,
+      site: initOptions.site,
+      apiUrl: initOptions.apiUrl,
+      debug: !!initOptions.debug
     };
 
     if(!global.inBrowser)
@@ -70,6 +90,8 @@ export namespace v1
 
     if(!sessionId)
       sessionId = nanoid();
+    else
+      throw new Error("Analytics has already been initialized, `analyticsPageInit` must only be called once");
 
     userId = localStorage.getItem(STORAGE_KEYS.LOCAL.USER_ID) || undefined;
     if(!userId)
@@ -81,7 +103,7 @@ export namespace v1
     /* Timer that starts once and will get the current analytic page object and increment the time only if the page is visible */
     if(!pageTimeIncrementStarted)
     {
-      debug && console.log("pageTimeIncrementStarted");
+      global.debug && console.log("pageTimeIncrementStarted");
       pageTimeIncrementStarted = true;
 
       setInterval(() =>
@@ -91,7 +113,7 @@ export namespace v1
           if(currentPageAnalytic)
             currentPageAnalytic.time_on_page++;
 
-          debug && currentPageAnalytic &&  console.log(currentPageAnalytic.page_url, currentPageAnalytic.time_on_page);
+          global.debug && currentPageAnalytic && console.log(currentPageAnalytic.page_url, currentPageAnalytic.time_on_page);
         }
       }, 1000)
     }
@@ -106,11 +128,11 @@ export namespace v1
       {
         if(document.visibilityState === 'visible')
         {
-          debug && console.log("VISIBLE", new Date());
+          global.debug && console.log("VISIBLE", new Date());
         }
         if(document.visibilityState === 'hidden')
         {
-          debug && console.log("HIDDEN", new Date());
+          global.debug && console.log("HIDDEN", new Date());
           if(currentPageAnalytic)
             sendRequest(global.apiUrl+pathTrackPage, JSON.stringify(currentPageAnalytic));
         }
@@ -124,16 +146,18 @@ export namespace v1
    */
   export function analyticsPageChange(path: string)
   {
-    console.log(global)
     if(!global.inBrowser)
       return;
 
     if(!sessionId || !userId)
       throw new Error("Analytics have not been initialized");
 
-    /* If we have an existing page analytic send it(because we incremented the time on page for it), before creating the new one */
+    /* If we have an existing page analytic send it (because we incremented the time on page for it), before creating the new one */
     if(currentPageAnalytic)
+    {
+      global.debug && console.log("Sending previous analytic");
       sendRequest(global.apiUrl+pathTrackPage, JSON.stringify(currentPageAnalytic));
+    }
 
     const pageId = nanoid();
     const openedAt =  (new Date()).toISOString();
@@ -169,6 +193,7 @@ export namespace v1
     if(remainderQs.length > 0)
       currentPageAnalytic.querystring = remainderQs.join(",");
 
+    global.debug && console.log("Sending new analytic");
     sendRequest(global.apiUrl+pathTrackPage, JSON.stringify(currentPageAnalytic));
   }
 
