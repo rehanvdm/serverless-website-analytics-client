@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/rehanvdm/serverless-website-analytics-client-development/compare/v1.1.0...v1.2.0) (2023-02-27)
+
+
+### Features
+
+* change init and cleanup ([4f22694](https://github.com/rehanvdm/serverless-website-analytics-client-development/commit/4f22694a67a333b4e146d5da2c0683292b95256e))
+
 ## [1.1.0](https://github.com/rehanvdm/serverless-website-analytics-client-development/compare/v1.0.0...v1.1.0) (2023-02-26)
 
 
