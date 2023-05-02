@@ -74,7 +74,7 @@ A small cheat sheet, in order to get a:
 A new Major version should only be rolled when a new version of the backend ingest API is rolled out. The client package
 major version must always match the current ingest API latest version.
 
-A Github workflow is used to create the new version on GitHub and NPM. It is only triggered on the condition that it
+A GitHub workflow is used to create the new version on GitHub and NPM. It is only triggered on the condition that it
 is a push to main (after a PR is merged) and that the `/package` files changed.
 
 ## Contributing
