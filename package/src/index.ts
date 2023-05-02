@@ -14,12 +14,12 @@ export namespace v1
     }
   };
 
-  const pathTrackPage = "/api-ingest/v1/page/track";
+  const pathTrackPage = "/api-ingest/v1/page/view";
 
   /* === SESSION STORAGE === */
   let sessionId: string | undefined = undefined;
   let userId: string | undefined = undefined;
-  let currentPageAnalytic: ApiTypes.V1.MutationV1PageTrack.RequestBody | undefined;
+  let currentPageAnalytic: ApiTypes.V1.MutationPageView.RequestBody | undefined;
   let pageTimeIncrementStarted: boolean = false;
   let visibilityListening: boolean = false;
 
@@ -179,6 +179,7 @@ export namespace v1
       utm_campaign: params.utm_campaign,
       utm_term: params.utm_term,
       utm_content: params.utm_content,
+      referrer: document.referrer
     };
 
     const removeFromParams = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];

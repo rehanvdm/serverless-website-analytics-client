@@ -5,9 +5,9 @@ info:
 servers:
   - url: '-'
 paths:
-  /v1/page/track:
+  /v1/page/view:
     post:
-      operationId: mutation.v1PageTrack
+      operationId: mutation.pageView
       requestBody:
         required: true
         content:
@@ -41,6 +41,8 @@ paths:
                   type: string
                 querystring:
                   type: string
+                referrer:
+                  type: string
               required:
                 - site
                 - user_id
@@ -49,6 +51,58 @@ paths:
                 - page_url
                 - page_opened_at
                 - time_on_page
+              additionalProperties: false
+      parameters: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema: {}
+        default:
+          $ref: '#/components/responses/error'
+  /v1/event/track:
+    post:
+      operationId: mutation.eventTrack
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                site:
+                  type: string
+                user_id:
+                  type: string
+                session_id:
+                  type: string
+                event:
+                  type: string
+                tracked_at:
+                  type: string
+                data:
+                  type: number
+                utm_source:
+                  type: string
+                utm_medium:
+                  type: string
+                utm_campaign:
+                  type: string
+                utm_term:
+                  type: string
+                utm_content:
+                  type: string
+                querystring:
+                  type: string
+                referrer:
+                  type: string
+              required:
+                - site
+                - user_id
+                - session_id
+                - event
+                - tracked_at
               additionalProperties: false
       parameters: []
       responses:
