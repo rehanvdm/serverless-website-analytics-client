@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0](https://github.com/rehanvdm/serverless-website-analytics-client-development/compare/v1.2.0...v1.3.0) (2023-05-02)
+
+
+### Features
+
+* release ([5b7798a](https://github.com/rehanvdm/serverless-website-analytics-client-development/commit/5b7798a08a6e9a69a7c59a3034096bfb568942dc))
+* release ([8ba3517](https://github.com/rehanvdm/serverless-website-analytics-client-development/commit/8ba35170646cd3532a43eb8158627a040c1d6946))
+
 ## [1.2.0](https://github.com/rehanvdm/serverless-website-analytics-client-development/compare/v1.1.0...v1.2.0) (2023-02-27)
 
 
