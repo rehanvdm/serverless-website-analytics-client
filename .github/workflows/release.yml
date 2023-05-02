@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          # Otherwise the token this creates(?) overrides the workflow generated one
+          # Otherwise the token this creates(?) overrides the workflow generated one, required for semantic-release to work
           # https://github.com/semantic-release/semantic-release/blob/master/docs/recipes/ci-configurations/github-actions.md#pushing-packagejson-changes-to-a-master-branch
           persist-credentials: false
       - uses: actions/setup-node@v3
