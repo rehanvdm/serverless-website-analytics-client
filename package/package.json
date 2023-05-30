@@ -1,6 +1,10 @@
 {
   "name": "serverless-website-analytics-client",
   "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rehanvdm/serverless-website-analytics-client.git"
+  },
   "description": "Web client for serverless-website-analytics",
   "author": "Rehan van der Merwe (https://twitter.com/der_rehan)",
   "license": "GPL-2.0-only",
