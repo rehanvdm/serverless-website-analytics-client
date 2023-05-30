@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/rehanvdm/serverless-website-analytics-client/compare/v1.3.0...v1.3.1) (2023-05-30)
+
+
+### Bug Fixes
+
+* update package json ([d87cb66](https://github.com/rehanvdm/serverless-website-analytics-client/commit/d87cb6633a13e76e509c52bb9f98efa2c8b56d9f))
+
 ## [1.3.0](https://github.com/rehanvdm/serverless-website-analytics-client-development/compare/v1.2.0...v1.3.0) (2023-05-02)
 
 
