@@ -76,7 +76,35 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 
 ### Svelte
 
-TODO
+[_./usage/svelte/svelte-project/src/App.svelte_](https://github.com/rehanvdm/serverless-website-analytics-client/blob/master/usage/svelte/svelte-project/src/App.svelte)
+```sveltehtml
+<!-- Show the router -->
+<Router {routes}  on:routeLoaded={routeLoaded} />
+
+<script>
+import Router from 'svelte-spa-router'
+import * as swaClient from 'serverless-website-analytics-client';
+
+import Home from "./Home.svelte";
+import About from "./About.svelte";
+
+const routes = {
+  '/': Home,
+  '/about': About,
+}
+
+swaClient.v1.analyticsPageInit({
+  inBrowser: true, //Not SSR
+  site: "<Friendly site name>", //vue-project
+  apiUrl: "<Your serverless-website-analytics URL>", //https://my-serverless-website-analytics-backend.com
+  // debug: true,
+});
+
+function routeLoaded(event) {
+  swaClient.v1.analyticsPageChange(event.detail.route);
+}
+</script>
+```
 
 ## Package src
 
