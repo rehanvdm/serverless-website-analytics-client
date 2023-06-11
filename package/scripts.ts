@@ -116,6 +116,15 @@ async function build()
 
   console.log("** Coping files");
   await fs.copyFile(paths.workingDir+"/package.json", paths.dist+"/package.json");
+
+  // Read the package.json that will be published and remove some stuff
+  let packageJson = JSON.parse((await fs.readFile(paths.dist+"/package.json")).toString());
+  delete packageJson.dependencies;
+  delete packageJson.scripts;
+  delete packageJson.wireit;
+  await fs.writeFile(paths.dist+"/package.json", JSON.stringify(packageJson, null, 2));
+
+
   await fs.copyFile(paths.topLevelDir+"/README.md", paths.dist+"/README.md");
 
 
