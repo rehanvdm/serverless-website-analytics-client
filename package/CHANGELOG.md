@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.4.0](https://github.com/rehanvdm/serverless-website-analytics-client/compare/v1.3.1...v1.4.0) (2023-06-11)
+
+
+### Features
+
+* add react usage [#1](https://github.com/rehanvdm/serverless-website-analytics-client/issues/1) ([#6](https://github.com/rehanvdm/serverless-website-analytics-client/issues/6)) ([e2eb46d](https://github.com/rehanvdm/serverless-website-analytics-client/commit/e2eb46dd5b5ae6849442a42ee76836609997fc9b))
+* add svelte usage [#2](https://github.com/rehanvdm/serverless-website-analytics-client/issues/2) ([e718298](https://github.com/rehanvdm/serverless-website-analytics-client/commit/e7182982ceb0abb0104e276d9956086067bb3cb7))
+* add svelte usage [#2](https://github.com/rehanvdm/serverless-website-analytics-client/issues/2) ([#7](https://github.com/rehanvdm/serverless-website-analytics-client/issues/7)) ([7a9fde5](https://github.com/rehanvdm/serverless-website-analytics-client/commit/7a9fde5e289f5456901ab08137727e062ef5af20))
+* remove unnecessary dependencies from the final package.json [#4](https://github.com/rehanvdm/serverless-website-analytics-client/issues/4) ([df7a36e](https://github.com/rehanvdm/serverless-website-analytics-client/commit/df7a36ecb006ecbf4e316519fb0bf5d22d28a0b6))
+* remove unnecessary dependencies from the final package.json [#4](https://github.com/rehanvdm/serverless-website-analytics-client/issues/4) ([0519b16](https://github.com/rehanvdm/serverless-website-analytics-client/commit/0519b1685d257ade29d7966f3a2e8172eb1a2f31))
+
 ## [1.3.1](https://github.com/rehanvdm/serverless-website-analytics-client/compare/v1.3.0...v1.3.1) (2023-05-30)
 
 
