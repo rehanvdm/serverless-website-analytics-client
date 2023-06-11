@@ -23,7 +23,7 @@ The following sections show you how to do it in various frameworks.
 
 ### Vue
 
-_./usage/vue/vue-project/src/main.ts_
+[_./usage/vue/vue-project/src/main.ts_](https://github.com/rehanvdm/serverless-website-analytics-client/blob/master/usage/vue/vue-project/src/main.ts)
 ```typescript
 ...
 import * as swaClient from 'serverless-website-analytics-client';
@@ -46,7 +46,33 @@ app.mount('#app');
 
 ### React
 
-TODO
+[_./usage/react/react-project/src/main.tsx_](https://github.com/rehanvdm/serverless-website-analytics-client/blob/master/usage/react/react-project/src/main.tsx)
+```typescript
+...
+import * as swaClient from 'serverless-website-analytics-client';
+
+const router = createBrowserRouter([
+  ...
+]);
+
+swaClient.v1.analyticsPageInit({
+  inBrowser: true, //Not SSR
+  site: "<Friendly site name>", //vue-project
+  apiUrl: "<Your serverless-website-analytics URL>", //https://my-serverless-website-analytics-backend.com
+  // debug: true,
+});
+
+router.subscribe((state) => {
+  swaClient.v1.analyticsPageChange(state.location.pathname);
+});
+swaClient.v1.analyticsPageChange("/");
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
+    <RouterProvider router={router} />
+</React.StrictMode>,
+)
+```
 
 ### Svelte
 
