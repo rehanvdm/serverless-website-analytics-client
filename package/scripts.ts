@@ -16,10 +16,10 @@ const paths = {
   workingDir: path.resolve(__dirname),
   src: path.resolve(__dirname+"/src"),
   srcInput: path.resolve(__dirname+"/src/index.ts"),
+  srcInputCdn: path.resolve(__dirname+"/src/cdn/client-script.ts"),
   openApiSpec: path.resolve(__dirname+"/src/OpenAPI-Ingest.yaml"),
   dist: path.resolve(__dirname+"/dist"),
-  distOutputCjs: path.resolve(__dirname+"/dist/index.js"),
-  distOutputEsm: path.resolve(__dirname+"/dist/index.mjs"),
+  distCdn: path.resolve(__dirname+"/dist/cdn"),
 }
 
 
@@ -78,24 +78,21 @@ export async function fileExists(path: string){
 export async function folderExists(path: string){
   return fs.opendir(path).then(async (dir) => { await dir.close(); return true; }).catch(err => false)
 }
-async function build()
-{
-  console.time("* BUILD");
 
-  console.log("** Clean");
-  let packageFolderExist = await folderExists(paths.dist);
+async function transpile(srcInput: string, dist: string, generateTypes: boolean) {
+  console.log("*** Clean: " +dist);
+  let packageFolderExist = await folderExists(dist);
   if(!packageFolderExist) //create
-    await fs.mkdir(paths.dist,{ recursive: true });
+    await fs.mkdir(dist,{ recursive: true });
   else //clear contents and recreate
   {
-    await fs.rm(paths.dist,{ recursive: true });
-    await fs.mkdir(paths.dist,{ recursive: true });
+    await fs.rm(dist,{ recursive: true });
+    await fs.mkdir(dist,{ recursive: true });
   }
 
-
-  console.log("** Bundling");
+  console.log("*** Transpiling: " +srcInput);
   const bundle = await rollup({
-    input: paths.srcInput,
+    input: srcInput,
     plugins: [
       typescript({}),
       nodeResolve({
@@ -104,17 +101,33 @@ async function build()
       terser({sourceMap: true}),
     ]
   });
+
+  const fileName = path.basename(srcInput, path.extname(srcInput));
+  const distOutputCjs = dist + "/"+fileName+".js";
+  const distOutputEsm = dist + "/"+fileName+".mjs";
   //@ts-ignore because sourcemap is specified correctly https://github.com/terser/terser#source-map-options
-  await bundle.write({ file: paths.distOutputCjs, format: 'cjs', sourcemap: { filename: "out.js", url: "out.js.map"} });
+  await bundle.write({file: distOutputCjs, format: 'cjs', sourcemap: {filename: "out.js", url: "out.js.map"}});
   //@ts-ignore because sourcemap is specified correctly https://github.com/terser/terser#source-map-options
-  await bundle.write({ file: paths.distOutputEsm, format: 'esm', sourcemap: { filename: "out.mjs", url: "out.mjs.map"} });
+  await bundle.write({file: distOutputEsm, format: 'esm', sourcemap: {filename: "out.mjs", url: "out.mjs.map"}});
 
+  if(generateTypes)
+  {
+    console.log("*** Generate types - d.ts");
+    await execaCommand("tsc --declaration  --emitDeclarationOnly " + srcInput + " " +
+      "--outDir " + dist, {reject: true});
+  }
+}
 
-  console.log("** Generate types - d.ts");
-  await execaCommand("tsc --declaration  --emitDeclarationOnly "+paths.srcInput+" " +
-    "--outDir "+paths.dist, { reject: true });
+async function build()
+{
+  console.time("* BUILD");
+  console.log("* BUILD");
 
-  console.log("** Coping files");
+  console.log("** Transpiling..");
+  await transpile(paths.srcInput, paths.dist, true,);
+  await transpile(paths.srcInputCdn, paths.distCdn, false);
+
+  console.log("** Coping files..");
   await fs.copyFile(paths.workingDir+"/package.json", paths.dist+"/package.json");
 
   // Read the package.json that will be published and remove some stuff
@@ -124,9 +137,7 @@ async function build()
   delete packageJson.wireit;
   await fs.writeFile(paths.dist+"/package.json", JSON.stringify(packageJson, null, 2));
 
-
   await fs.copyFile(paths.topLevelDir+"/README.md", paths.dist+"/README.md");
-
 
   console.timeEnd("* BUILD");
 }
