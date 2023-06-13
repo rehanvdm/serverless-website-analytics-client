@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/rehanvdm/serverless-website-analytics-client/compare/v1.4.0...v1.5.0) (2023-06-13)
+
+
+### Features
+
+* add standalone usage [#3](https://github.com/rehanvdm/serverless-website-analytics-client/issues/3) ([#10](https://github.com/rehanvdm/serverless-website-analytics-client/issues/10)) ([e32e050](https://github.com/rehanvdm/serverless-website-analytics-client/commit/e32e050543be1fb1ded6e177dcdf3a9e46498cd2))
+
 ## [1.4.0](https://github.com/rehanvdm/serverless-website-analytics-client/compare/v1.3.1...v1.4.0) (2023-06-11)
 
 
