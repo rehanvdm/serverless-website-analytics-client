@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
+    "copy-cdn-file-for-test": "cp ./../../../package/dist/cdn/client-script.js ./public/cdn",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "build-only": "vite build",

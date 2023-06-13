@@ -8,10 +8,6 @@ export namespace v1
     LOCAL: {
       USER_ID: storagePrefix+"userId",
     },
-    SESSION: {
-      CURRENT_PAGE_ANALYTIC: storagePrefix+"currentPageAnalytic",
-      PAGE_TIME_INCREMENT_STARTED: storagePrefix+"pageTimeIncrementStarted",
-    }
   };
 
   const pathTrackPage = "/api-ingest/v1/page/view";

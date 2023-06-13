@@ -1,11 +1,34 @@
 # Serverless Website Analytics Client
 
-`/package` - Contains the NPM package code as published on [npm](https://www.npmjs.com/package/serverless-website-analytics-client)
-and installed by clients.
-`/usage` - Contains the basic `create` app for: Vue, React and Svelte that showcase how to use the client in each of
-those frameworks. This is also highlighted in the next Usage section.
-
 ## Usage
+
+There are **two ways to use the client**:
+- **Standalone import script** - Single line, standard JS script in your HTML.
+- **SDK client** - Import the SDK client into your project and use in any SPA.
+
+### Standalone Import Script Usage
+
+Then include the standalone script in your HTML:
+```html
+<html lang="en">
+<head> ... </head>
+<body>
+...
+<script src="<YOUR BACKEND ORIGIN>/cdn/client-script.js" site="<THE SITE YOU ARE TRACKING>"></script>
+</body>
+</html>
+```
+
+You need to replace `<YOUR BACKEND ORIGIN>` with the origin of your deployed backend. Available attributes on the script
+are:
+- `site` - Required. The name of your site, this must correspond with the name you specified when deploying the
+`serverless-website-analytics` backend.
+- `api-url` - Optional. Uses the same origin as the current script if not specified. This is the URL to the backend.
+Allowing it to be specified opens a few use cases for testing.
+- `serverless-website-analytics` - Optional. This is only required if the browser does not support `document.currentScript`
+(All modern browsers since 2015 do). Only specify the tag, no value is needed.
+
+### SDK Client Usage
 
 Install the client:
 ```
@@ -19,9 +42,9 @@ when deploying the `serverless-website-analytics` backend. You also need the URL
 site's `Origin` is whitelisted in the backend config.
 2. On each route change call the `analyticsPageChange` function with the name of the new page.
 
-The following sections show you how to do it in various frameworks.
+The following sections show you how to do it in a few frameworks, but you can still DIY with the SDK in **ANY framework**.
 
-### Vue
+#### Vue
 
 [_./usage/vue/vue-project/src/main.ts_](https://github.com/rehanvdm/serverless-website-analytics-client/blob/master/usage/vue/vue-project/src/main.ts)
 ```typescript
@@ -44,7 +67,7 @@ router.afterEach((event) => {
 app.mount('#app');
 ```
 
-### React
+#### React
 
 [_./usage/react/react-project/src/main.tsx_](https://github.com/rehanvdm/serverless-website-analytics-client/blob/master/usage/react/react-project/src/main.tsx)
 ```typescript
@@ -74,7 +97,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 )
 ```
 
-### Svelte
+#### Svelte
 
 [_./usage/svelte/svelte-project/src/App.svelte_](https://github.com/rehanvdm/serverless-website-analytics-client/blob/master/usage/svelte/svelte-project/src/App.svelte)
 ```sveltehtml
@@ -105,6 +128,8 @@ function routeLoaded(event) {
 }
 </script>
 ```
+
+..Any other framework
 
 ## Package src
 
