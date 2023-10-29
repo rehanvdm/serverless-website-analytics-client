@@ -10,11 +10,20 @@
 <br>
 <br>
 
-<p>Click for the <a href="about.html">About</a> page</p>
-<p>Click for the <a href="index.html#test/something">Same with hash</a> page</p>
+<p>Click for the <a href="about.html" onclick="swa.v1.analyticsTrack('about_click')">About</a> page</p>
+<p>Click for the <a href="about.html" swa-event="about-event">About</a> page</p>
+<p>Click for the <a href="about.html" swa-event="about-event-2" swa-event-category="clicks" swa-event-data="100" >About</a> page</p>
+<p>Click for the <a href="index.html#test/something">Same page with hash</a> page</p>
 
-<script src="<YOUR BACKEND ORIGIN>/cdn/client-script.js" site="<THE SITE YOU ARE TRACKING>"></script>
+<button swa-event="test-event">Test Manual Event</button>
+
+<script src="<YOUR BACKEND ORIGIN>/cdn/client-script.js" site="<THE SITE YOU ARE TRACKING>" attr-tracking="true"></script>
 <!--<script src="../../package/dist/cdn/client-script.js" serverless-website-analytics site="my-project.com" api-url="http://localhost:5000"></script>-->
-<!--<script src="../../package/dist/cdn/client-script.js" site="my-project.com"></script>-->
+<!--<script src="../../package/dist/cdn/client-script.js" site="tests"  api-url="http://localhost:3000" attr-tracking="true"></script>-->
+
+<script>
+
+</script>
+
 </body>
 </html>

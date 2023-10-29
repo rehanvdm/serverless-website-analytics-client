@@ -12,9 +12,9 @@ app.use(router);
 
 swaClient.v1.analyticsPageInit({
   inBrowser: true,
-  site: "vue-project",
-  // apiUrl: "http://localhost:3000",
-  apiUrl: "https://d3nhr87nci4rd5.cloudfront.net",
+  site: "tests",
+  apiUrl: "http://localhost:3000",
+  // apiUrl: "https://d3nhr87nci4rd5.cloudfront.net",
   // debug: true,
 });
 router.afterEach((event) => {
@@ -22,3 +22,5 @@ router.afterEach((event) => {
 });
 
 app.mount('#app');
+
+export { swaClient };

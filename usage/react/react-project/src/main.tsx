@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import './index.css'
 import * as swaClient from 'serverless-website-analytics-client';
+// import * as swaClient from '../../../../package/src/index.ts';
 
 const router = createBrowserRouter([{
     path: "/",
@@ -20,9 +21,9 @@ const router = createBrowserRouter([{
 
 swaClient.v1.analyticsPageInit({
   inBrowser: true,
-  site: "react-project",
-  // apiUrl: "http://localhost:3000",
-  apiUrl: "https://d3nhr87nci4rd5.cloudfront.net",
+  site: "tests",
+  apiUrl: "http://localhost:3000",
+  // apiUrl: "https://d3nhr87nci4rd5.cloudfront.net",
   // debug: true,
 });
 
@@ -36,3 +37,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <RouterProvider router={router} />
   </React.StrictMode>,
 )
+
+export { swaClient };

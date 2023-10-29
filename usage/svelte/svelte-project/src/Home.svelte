@@ -15,12 +15,11 @@
   </div>
   <h1>Vite + Svelte</h1>
 
+  <h2>Click to go to the <a href="#/about">About</a> page</h2>
+
   <div class="card">
     <Counter />
   </div>
-
-  <h2>Click to go to the <a href="#/about">About</a> page</h2>
-
 
 </main>
 

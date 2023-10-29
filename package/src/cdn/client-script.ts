@@ -59,5 +59,32 @@ import * as swaClient from "../";
 
   swaClient.v1.analyticsPageChange(getPath());
 
+  /* Track all `button` and `a` HTML elements that have the `swa-event` attribute if `attr-tracking` is specified on the script
+  *  Example:
+  *  <button swa-event="download">Download</button>
+  *  <button swa-event="download" swa-event-category="clicks">Download</button>
+  *  <button swa-event="buy" swa-event-category="clicks" swa-event-data="99">Buy now</button>
+  *  <a swa-event="click" swa-event-category="link" swa-event-data="2">Click me</a>
+  *  */
+  const attrTracking = me.getAttribute('attr-tracking');
+  if(attrTracking && attrTracking != "false") {
+    document.querySelectorAll('button, a').forEach(function(element) {
+      element.addEventListener('click', (event) => {
+        if(!event.target)
+          return;
+
+        const eventTarget = event.target as HTMLElement;
+        const trackEvent = eventTarget.getAttribute('swa-event');
+        if(trackEvent) {
+          const trackCategory = eventTarget.getAttribute('swa-event-category') || undefined;
+          const trackData = eventTarget.getAttribute('swa-event-data') || undefined;
+          const trackDataNumber = trackData ? Number(trackData) : undefined
+          swaClient.v1.analyticsTrack(trackEvent, trackDataNumber, trackCategory);
+        }
+      });
+    });
+  }
+
+
 })();
 

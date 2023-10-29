@@ -11,6 +11,7 @@ export namespace v1
   };
 
   const pathTrackPage = "/api-ingest/v1/page/view";
+  const pathTrackEvent = "/api-ingest/v1/event/track";
 
   /* === SESSION STORAGE === */
   let sessionId: string | undefined = undefined;
@@ -136,6 +137,21 @@ export namespace v1
     }
   }
 
+  function getCleanQueryString(queryStringParams: { [p: string]: string }) {
+    const removeFromParams = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
+    const remainderQs = [];
+    for (let key of Object.keys(queryStringParams)) {
+      if (removeFromParams.includes(key))
+        continue;
+
+      remainderQs.push(key + "=" + queryStringParams[key]);
+    }
+    if (remainderQs.length == 0)
+      return undefined;
+
+    return remainderQs.join(",");
+  }
+
   /**
    * Call on every page change
    * @param path The new page path
@@ -175,48 +191,56 @@ export namespace v1
       utm_campaign: params.utm_campaign,
       utm_term: params.utm_term,
       utm_content: params.utm_content,
-      referrer: document.referrer
+      referrer: document.referrer,
+      querystring: getCleanQueryString(params)
     };
 
-    const removeFromParams = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
-    const remainderQs = [];
-    for(let key of Object.keys(params))
-    {
-      if(removeFromParams.includes(key))
-        continue;
 
-      remainderQs.push(key+"="+params[key]);
-    }
-    if(remainderQs.length > 0)
-      currentPageAnalytic.querystring = remainderQs.join(",");
 
     global.debug && console.log("Sending new analytic");
     sendRequest(global.apiUrl+pathTrackPage, JSON.stringify(currentPageAnalytic));
   }
 
 
-  // /**
-  //  *
-  //  * @param inBrowser
-  //  * @param event
-  //  * @param data If omitted, defaults to 1
-  //  */
-  // export function analyticsTrack(event: string, data?: number)
-  // {
-  //   if(!global.inBrowser)
-  //     return;
-  //
-  //   const trackedAt =  (new Date()).toISOString();
-  //
-  //   const trackedEvent: ReqAnalyticsTrackGoal = {
-  //     site: global.site,
-  //     user_id: userId!,
-  //     event: event,
-  //     data: data,
-  //     tracked_at: trackedAt,
-  //   };
-  //
-  //   navigator.sendBeacon(global.apiUrl+'/v1/analytics/track_goal', JSON.stringify(trackedEvent));
-  // }
+  /**
+   * Call on every event you want to track, like button clicks etc
+   * @param inBrowser
+   * @param event The event name
+   * @param data If omitted, defaults to 1
+   * @param category Optional
+   */
+  export function analyticsTrack(event: string, data?: number, category?: string)
+  {
+    if(!global.inBrowser)
+      return;
+
+    if(!sessionId || !userId)
+      throw new Error("Analytics have not been initialized");
+
+    const trackedAt =  (new Date()).toISOString();
+
+    /* Get querystring params */
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(urlSearchParams.entries());
+
+    const trackedEvent: ApiTypes.V1.MutationEventTrack.RequestBody = {
+      site: global.site,
+      user_id: userId!,
+      session_id: sessionId!,
+      category: category,
+      event: event,
+      data: data,
+      tracked_at: trackedAt,
+      utm_source: params.utm_source,
+      utm_medium: params.utm_medium,
+      utm_campaign: params.utm_campaign,
+      utm_term: params.utm_term,
+      utm_content: params.utm_content,
+      referrer: document.referrer,
+      querystring: getCleanQueryString(params)
+    };
+
+    sendRequest(global.apiUrl+pathTrackEvent, JSON.stringify(trackedEvent));
+  }
 
 }

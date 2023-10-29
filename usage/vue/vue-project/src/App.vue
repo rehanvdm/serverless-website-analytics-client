@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import {ref} from "vue";
+import {swaClient} from "./main";
+
+const count = ref(0)
+function handleClick() {
+  count.value++;
+  swaClient.v1.analyticsTrack("vue", count.value, "test")
+}
 </script>
 
 <template>
@@ -13,6 +21,11 @@ import HelloWorld from './components/HelloWorld.vue'
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
+
+        <br>
+        <br>
+        <button style="margin-left: 20px;" @click="handleClick"> Count is {{count}}</button>
+
       </nav>
     </div>
   </header>

@@ -3,9 +3,17 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import {Link} from "react-router-dom";
+import {useState} from "react";
+import {swaClient} from "./main.tsx";
 
 function App() {
-  // const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0)
+
+  function handleClick() {
+    console.log('Click happened');
+    setCount((count) => count + 1)
+    swaClient.v1.analyticsTrack("react", count, "test")
+  }
 
   return (
     <>
@@ -19,10 +27,10 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        {/*<button onClick={() => setCount((count) => count + 1)}>*/}
-        {/*  count is {count}*/}
-        {/*</button>*/}
          <h2>Click to go to the <Link to={`/about`}>About</Link> page</h2>
+        <button onClick={handleClick}>
+          count is {count}
+        </button>
       </div>
 
     </>
