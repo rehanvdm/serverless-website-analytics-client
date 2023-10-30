@@ -1,5 +1,22 @@
 # Serverless Website Analytics Client
 
+- [Serverless Website Analytics Client](#serverless-website-analytics-client)
+  * [Usage](#usage)
+    + [Standalone Import Script Usage](#standalone-import-script-usage)
+      - [Tracking](#tracking)
+        * [Attribute tracking](#attribute-tracking)
+        * [Manual tracking](#manual-tracking)
+    + [SDK Client Usage](#sdk-client-usage)
+      - [Vue](#vue)
+      - [React](#react)
+      - [Svelte](#svelte)
+  * [Package src](#package-src)
+  * [Developing](#developing)
+  * [Contributing](#contributing)
+  * [FAQ](#faq)
+    + [The network calls to the backend fail with 403](#the-network-calls-to-the-backend-fail-with-403)
+    + [Why not fetch with `keepalive` in the client](#why-not-fetch-with--keepalive--in-the-client)
+
 ## Usage
 
 There are **two ways to use the client**:
@@ -14,7 +31,7 @@ Then include the standalone script in your HTML:
 <head> ... </head>
 <body>
 ...
-<script src="<YOUR BACKEND ORIGIN>/cdn/client-script.js" site="<THE SITE YOU ARE TRACKING>"></script>
+<script src="<YOUR BACKEND ORIGIN>/cdn/client-script.js" site="<THE SITE YOU ARE TRACKING>" attr-tracking="true"></script>
 </body>
 </html>
 ```
@@ -25,8 +42,38 @@ are:
 `serverless-website-analytics` backend.
 - `api-url` - Optional. Uses the same origin as the current script if not specified. This is the URL to the backend.
 Allowing it to be specified opens a few use cases for testing.
+- `attr-tracking` - Optional. If `"true"`, the script will track all `button` and `a` HTML elements that have the
+`swa-event` attribute on them. Example: `<button swa-event="download">Download</button>`. See below for options.
 - `serverless-website-analytics` - Optional. This is only required if the browser does not support `document.currentScript`
 (All modern browsers since 2015 do). Only specify the tag, no value is needed.
+
+#### Tracking
+
+##### Attribute tracking
+
+If you specified the `attr-tracking` attribute on the script tag, then all `button` and `a` HTML elements that have the
+`swa-event` attribute on them will be tracked. The `swa-event` attribute is required and the following attributes are
+available:
+  - `swa-event-category` - Optional. The category of the event that can be used to group events.
+  - `swa-event-data` - Optional. The data of the event. Defaults to 1.
+
+```html
+<button swa-event="download">Download</button>
+
+<button swa-event="download" swa-event-category="clicks">Download</button>
+
+<button swa-event="buy" swa-event-category="clicks" swa-event-data="99">Buy now</button>
+
+<a swa-event="click" swa-event-category="link" swa-event-data="2">Click me</a>
+```
+
+##### Manual tracking
+
+You can find the instantiated instance of the `serverless-website-analytics` component under the window at `window.swa`.
+This enables you to call all the functions like tracking manually. Example:
+```js
+window.swa.v1.analyticsTrack('about_click')
+```
 
 ### SDK Client Usage
 
@@ -65,6 +112,18 @@ router.afterEach((event) => {
 });
 
 app.mount('#app');
+
+export { swaClient };
+```
+
+Tracking:
+
+[_./usage/vue/vue-project/src/App.vue_](https://github.com/rehanvdm/serverless-website-analytics-client/blob/master/usage/vue/vue-project/src/App.vue)
+```typescript
+import {swaClient} from "./main";
+...
+//                         (event: string, data?: number, category?: string)
+swaClient.v1.analyticsTrack("vue", count.value, "test")
 ```
 
 #### React
@@ -95,7 +154,19 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <RouterProvider router={router} />
 </React.StrictMode>,
 )
+
+export { swaClient };
 ```
+
+Tracking:
+
+[_./usage/react/react-project/src/App.tsx_](https://github.com/rehanvdm/serverless-website-analytics-client/blob/master/usage/react/react-project/src/App.tsx)
+```typescript
+import {swaClient} from "./main.tsx";
+...
+//                         (event: string, data?: number, category?: string)
+swaClient.v1.analyticsTrack("vue", count.value, "test")
+````
 
 #### Svelte
 
@@ -104,7 +175,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 <!-- Show the router -->
 <Router {routes}  on:routeLoaded={routeLoaded} />
 
-<script>
+<script context="module">
 import Router from 'svelte-spa-router'
 import * as swaClient from 'serverless-website-analytics-client';
 
@@ -126,16 +197,33 @@ swaClient.v1.analyticsPageInit({
 function routeLoaded(event) {
   swaClient.v1.analyticsPageChange(event.detail.route);
 }
+
+export { swaClient };
 </script>
 ```
+
+Tracking:
+
+[_./usage/svelte/svelte-project/src/lib/Counter.svelte_](https://github.com/rehanvdm/serverless-website-analytics-client/blob/master/usage/svelte/svelte-project/src/lib/Counter.svelte)
+```sveltehtml
+<script lang="ts">
+import { swaClient } from '../App.svelte'
+//                         (event: string, data?: number, category?: string)
+swaClient.v1.analyticsTrack("svelte", count, "test")
+}
+</script>
+````
 
 ..Any other framework
 
 ## Package src
 
 The src located at `package/src/index.ts` does not use any libraries to generate the API. The TypeScript types however
-are generated from the `OpenAPI-Ingest.yaml` file that is copied(manually) from the backend. The client is written in a
-functional manner and leverages namespaces for the versioning.
+are generated from the `OpenAPI-Ingest.yaml` file that is copied(manually) from the backend
+(`cd src/src && npm run generate-openapi-ingest`). Once the latest `OpenAPI-Ingest.yaml` is copied to the `package/src`
+directory the command `cd package && npm run generate-types` can be run to generate the latest TS types.
+
+The client is written in a functional manner and leverages namespaces for the versioning.
 
 The deploy scripts are managed by [wireit](https://github.com/google/wireit) which just supercharges your `npm` scripts.
 It calls the certain functions in the `package/src/scripts.ts` file to do things like generate the API TS types from the

@@ -1,9 +1,10 @@
 <!-- Show the router -->
 <Router {routes}  on:routeLoaded={routeLoaded} />
 
-<script>
+<script context="module">
   import Router from 'svelte-spa-router'
   import * as swaClient from 'serverless-website-analytics-client';
+  // import * as swaClient from '../../../../package/src/index.ts';
 
   import Home from "./Home.svelte";
   import About from "./About.svelte";
@@ -15,9 +16,9 @@
 
   swaClient.v1.analyticsPageInit({
     inBrowser: true,
-    site: "svelte-project",
-    // apiUrl: "http://localhost:3000",
-    apiUrl: "https://d3nhr87nci4rd5.cloudfront.net",
+    site: "tests",
+    apiUrl: "http://localhost:3000",
+    // apiUrl: "https://d3nhr87nci4rd5.cloudfront.net",
     // debug: true,
   });
 
@@ -25,4 +26,6 @@
     // console.log('Route', event.detail.route)
     swaClient.v1.analyticsPageChange(event.detail.route);
   }
+
+  export { swaClient };
 </script>

@@ -30,6 +30,7 @@ export interface MutationEventTrackPayload {
   site: string;
   user_id: string;
   session_id: string;
+  category?: string;
   event: string;
   tracked_at: string;
   data?: number;

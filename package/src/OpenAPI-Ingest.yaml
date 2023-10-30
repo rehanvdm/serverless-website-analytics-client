@@ -77,6 +77,8 @@ paths:
                   type: string
                 session_id:
                   type: string
+                category:
+                  type: string
                 event:
                   type: string
                 tracked_at:
