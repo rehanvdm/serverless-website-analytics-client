@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/rehanvdm/serverless-website-analytics-client/compare/v1.5.0...v1.6.0) (2023-10-30)
+
+
+### Features
+
+* add events [#9](https://github.com/rehanvdm/serverless-website-analytics-client/issues/9) ([#13](https://github.com/rehanvdm/serverless-website-analytics-client/issues/13)) ([6974f19](https://github.com/rehanvdm/serverless-website-analytics-client/commit/6974f19f01634427b3a7a229b3e923103658be59))
+
 ## [1.5.0](https://github.com/rehanvdm/serverless-website-analytics-client/compare/v1.4.0...v1.5.0) (2023-06-13)
 
 
