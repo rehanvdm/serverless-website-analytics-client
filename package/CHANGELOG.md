@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/rehanvdm/serverless-website-analytics-client/compare/v1.6.0...v1.6.1) (2023-10-31)
+
+
+### Bug Fixes
+
+* standalone usage of swaClient ([#14](https://github.com/rehanvdm/serverless-website-analytics-client/issues/14)) ([c11a27f](https://github.com/rehanvdm/serverless-website-analytics-client/commit/c11a27f41d3a8eae69e4b393b36bdb942a813c68))
+
 ## [1.6.0](https://github.com/rehanvdm/serverless-website-analytics-client/compare/v1.5.0...v1.6.0) (2023-10-30)
 
 
