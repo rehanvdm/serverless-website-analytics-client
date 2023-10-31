@@ -78,8 +78,12 @@ import * as swaClient from "../";
         if(trackEvent) {
           const trackCategory = eventTarget.getAttribute('swa-event-category') || undefined;
           const trackData = eventTarget.getAttribute('swa-event-data') || undefined;
-          const trackDataNumber = trackData ? Number(trackData) : undefined
-          swaClient.v1.analyticsTrack(trackEvent, trackDataNumber, trackCategory);
+          const trackDataNumber = trackData ? Number(trackData) : undefined;
+
+          // Have to use on the window object because the local defined swaClient is out of scope, it seems.
+          //@ts-ignore
+          const globalSwaClient = window.swa as typeof swaClient;
+          globalSwaClient.v1.analyticsTrack(trackEvent, trackDataNumber, trackCategory);
         }
       });
     });
