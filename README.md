@@ -82,7 +82,7 @@ tracking events outside your domain, like email opens, external blog views, etc.
 ```html
 <img src="<YOUR BACKEND ORIGIN>/api-ingest/v1/event/track/beacon.gif?site=<SITE>&event=<EVENT>" height="1" width="1" alt="">
 ```
-The `site` and `event` fields are required. The `category` field an all the other fields are optional, except
+The `site` and `event` fields are required. The `category` field and all the other fields are optional, except
 the `referrer` field, which is not supported.
 
 ### SDK Client Usage
