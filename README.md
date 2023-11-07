@@ -75,6 +75,16 @@ This enables you to call all the functions like tracking manually. Example:
 window.swa.v1.analyticsTrack('about_click')
 ```
 
+#### Beacon/pixel tracking
+
+Beacon/pixel tracking can be used as alternative to HTML attribute tracking. Beacon tracking is useful for
+tracking events outside your domain, like email opens, external blog views, etc.
+```html
+<img src="<YOUR BACKEND ORIGIN>/api-ingest/v1/event/track/beacon.gif?site=<SITE>&event=<EVENT>" height="1" width="1" alt="">
+```
+The `site` and `event` fields are required. The `category` field and all the other fields are optional, except
+the `referrer` field, which is not supported.
+
 ### SDK Client Usage
 
 Install the client:
@@ -89,7 +99,14 @@ when deploying the `serverless-website-analytics` backend. You also need the URL
 site's `Origin` is whitelisted in the backend config.
 2. On each route change call the `analyticsPageChange` function with the name of the new page.
 
-The following sections show you how to do it in a few frameworks, but you can still DIY with the SDK in **ANY framework**.
+Beacon/pixel tracking is also supported but it is not recommended as it looses some info the SDK gathers. This includes
+the `session_id`, `user_id` and `referrer`fields. The first two can still be specified but the `reffer` field ca not.
+
+> [!IMPORTANT]
+> The following sections show you how to do it in a few frameworks, but you can still DIY with the SDK in **ANY framework**.
+> The [OpenAPI spec](https://github.com/rehanvdm/serverless-website-analytics-client/blob/master/package/src/OpenAPI-Ingest.yaml)
+> can be used for any language that isn't TS/JS.
+
 
 #### Vue
 
