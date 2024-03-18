@@ -33,17 +33,42 @@ export namespace v1
   };
   /* ======================= */
 
-  function sendRequest(urlAndPath: string, jsonDataStringified: string)
+  /**
+   * Send the request to the server. If bestEffort is true, we use fetch with keepalive for all browsers except Firefox
+   * that uses navigator.sendBeacon, otherwise we uses fetch (which is guaranteed deliver)
+   * @param urlAndPath
+   * @param jsonDataStringified
+   * @param bestEffort
+   * @private
+   */
+  function sendRequest(urlAndPath: string, jsonDataStringified: string, bestEffort: boolean = false)
   {
-    navigator.sendBeacon(urlAndPath, jsonDataStringified);
-    // fetch(urlAndPath, {
-    //   keepalive: true, // Same as navigator.sendBeacon(..) then
-    //   method: 'POST',
-    //   headers: {
-    //     'content-type': 'application/json',
-    //   },
-    //   body: jsonDataStringified,
-    // });
+    if(bestEffort)
+    {
+      const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+      if (isFirefox)
+        navigator.sendBeacon(urlAndPath, jsonDataStringified); // Blocked by add blockers unless on the same domain
+      else {
+        fetch(urlAndPath, {
+          keepalive: true, // Similar to navigator.sendBeacon(..) but not supported in FF
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: jsonDataStringified,
+        });
+      }
+    }
+    else
+    {
+      fetch(urlAndPath, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: jsonDataStringified,
+      });
+    }
   }
 
 
@@ -67,6 +92,11 @@ export namespace v1
      * Prints debug messages if enabled
      */
     debug?: boolean
+
+    /**
+     * The user id, if not set, a random one will be generated and stored in local storage for subsequent visits
+     */
+    userId?: string
   }
 
   /**
@@ -90,12 +120,18 @@ export namespace v1
     else
       throw new Error("Analytics has already been initialized, `analyticsPageInit` must only be called once");
 
-    userId = localStorage.getItem(STORAGE_KEYS.LOCAL.USER_ID) || undefined;
-    if(!userId)
-    {
-      userId = nanoid();
-      localStorage.setItem(STORAGE_KEYS.LOCAL.USER_ID, userId);
+    if(initOptions.userId) {
+      userId = initOptions.userId;
     }
+    else {
+      userId = localStorage.getItem(STORAGE_KEYS.LOCAL.USER_ID) || undefined;
+      if(!userId)
+      {
+        userId = nanoid();
+        localStorage.setItem(STORAGE_KEYS.LOCAL.USER_ID, userId);
+      }
+    }
+
 
     /* Timer that starts once and will get the current analytic page object and increment the time only if the page is visible */
     if(!pageTimeIncrementStarted)
@@ -131,7 +167,7 @@ export namespace v1
         {
           global.debug && console.log("HIDDEN", new Date());
           if(currentPageAnalytic)
-            sendRequest(global.apiUrl+pathTrackPage, JSON.stringify(currentPageAnalytic));
+            sendRequest(global.apiUrl+pathTrackPage, JSON.stringify(currentPageAnalytic), true);
         }
       });
     }
