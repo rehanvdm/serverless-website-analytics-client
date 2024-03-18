@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.0](https://github.com/rehanvdm/serverless-website-analytics-client/compare/v1.6.1...v1.7.0) (2024-03-18)
+
+
+### Features
+
+* add docs about pixel tracking ([#15](https://github.com/rehanvdm/serverless-website-analytics-client/issues/15)) ([9f01d24](https://github.com/rehanvdm/serverless-website-analytics-client/commit/9f01d24b8df6fe91d4234ba3d62aaf8a54d504b5))
+* change send method and allow setting userId ([62599cf](https://github.com/rehanvdm/serverless-website-analytics-client/commit/62599cff586be7d9433e508374ce0e4fddcb91b6))
+
 ## [1.6.1](https://github.com/rehanvdm/serverless-website-analytics-client/compare/v1.6.0...v1.6.1) (2023-10-31)
 
 
