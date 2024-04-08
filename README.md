@@ -56,6 +56,8 @@ If you specified the `attr-tracking` attribute on the script tag, then all `butt
 available:
   - `swa-event-category` - Optional. The category of the event that can be used to group events.
   - `swa-event-data` - Optional. The data of the event. Defaults to 1.
+  - `swa-event-async` - Optional. If present, the event will be sent asynchronously
+    with no guarantee of delivery but a better chance of not being canceled if page is unloaded right after.
 
 ```html
 <button swa-event="download">Download</button>
@@ -64,7 +66,7 @@ available:
 
 <button swa-event="buy" swa-event-category="clicks" swa-event-data="99">Buy now</button>
 
-<a swa-event="click" swa-event-category="link" swa-event-data="2">Click me</a>
+<a swa-event="click" swa-event-category="link" swa-event-data="2" swa-event-async>Click me</a>
 ```
 
 ##### Manual tracking
