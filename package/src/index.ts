@@ -243,9 +243,9 @@ export namespace v1
    * @param event The event name
    * @param data If omitted, defaults to 1
    * @param category Optional
-   * @param async Make a request with no guarantee of delivery but a better chance of not being canceled if page is unloaded right after. Defaults to false.
+   * @param isAsync Make a request with no guarantee of delivery but a better chance of not being canceled if page is unloaded right after. Defaults to false.
    */
-  export function analyticsTrack(event: string, data?: number, category?: string, async: boolean = false)
+  export function analyticsTrack(event: string, data?: number, category?: string, isAsync: boolean = false)
   {
     if(!global.inBrowser)
       return;
@@ -276,7 +276,7 @@ export namespace v1
       querystring: getCleanQueryString(params)
     };
 
-    sendRequest(global.apiUrl+pathTrackEvent, JSON.stringify(trackedEvent), async);
+    sendRequest(global.apiUrl+pathTrackEvent, JSON.stringify(trackedEvent), isAsync);
   }
 
 }

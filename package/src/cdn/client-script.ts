@@ -80,12 +80,12 @@ import * as swaClient from "../";
           const trackData = eventTarget.getAttribute('swa-event-data') || undefined;
           const trackDataNumber = trackData ? Number(trackData) : undefined;
           const asyncAttr = eventTarget.getAttribute('swa-event-async');
-          const async = (asyncAttr !== null && asyncAttr.toLowerCase() !== "false") || false;
+          const isAsync = (asyncAttr !== null && asyncAttr.toLowerCase() !== "false") || false;
 
           // Have to use on the window object because the local defined swaClient is out of scope, it seems.
           //@ts-ignore
           const globalSwaClient = window.swa as typeof swaClient;
-          globalSwaClient.v1.analyticsTrack(trackEvent, trackDataNumber, trackCategory, async);
+          globalSwaClient.v1.analyticsTrack(trackEvent, trackDataNumber, trackCategory, isAsync);
         }
       });
     });
