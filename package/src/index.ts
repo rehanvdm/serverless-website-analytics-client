@@ -240,12 +240,12 @@ export namespace v1
 
   /**
    * Call on every event you want to track, like button clicks etc
-   * @param inBrowser
    * @param event The event name
    * @param data If omitted, defaults to 1
    * @param category Optional
+   * @param isAsync Make a request with no guarantee of delivery but a better chance of not being canceled if page is unloaded right after. Defaults to false.
    */
-  export function analyticsTrack(event: string, data?: number, category?: string)
+  export function analyticsTrack(event: string, data?: number, category?: string, isAsync: boolean = false)
   {
     if(!global.inBrowser)
       return;
@@ -276,7 +276,7 @@ export namespace v1
       querystring: getCleanQueryString(params)
     };
 
-    sendRequest(global.apiUrl+pathTrackEvent, JSON.stringify(trackedEvent));
+    sendRequest(global.apiUrl+pathTrackEvent, JSON.stringify(trackedEvent), isAsync);
   }
 
 }
