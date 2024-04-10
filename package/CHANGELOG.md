@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/rehanvdm/serverless-website-analytics-client/compare/v1.7.0...v1.8.0) (2024-04-10)
+
+
+### Features
+
+* ability to send tracking event asynchronously ([#20](https://github.com/rehanvdm/serverless-website-analytics-client/issues/20)) ([d851057](https://github.com/rehanvdm/serverless-website-analytics-client/commit/d8510579cd79ad6039e9bd1a10ca5a972d02e6cf))
+
 ## [1.7.0](https://github.com/rehanvdm/serverless-website-analytics-client/compare/v1.6.1...v1.7.0) (2024-03-18)
 
 
