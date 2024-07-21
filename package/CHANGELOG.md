@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/rehanvdm/serverless-website-analytics-client/compare/v1.8.0...v1.8.1) (2024-07-21)
+
+
+### Bug Fixes
+
+* use the element which has the event listener on client-script.js ([#22](https://github.com/rehanvdm/serverless-website-analytics-client/issues/22)) ([ff86b9a](https://github.com/rehanvdm/serverless-website-analytics-client/commit/ff86b9a896ab7b1decbe70ef0773f1ac57ceb0a9))
+
 ## [1.8.0](https://github.com/rehanvdm/serverless-website-analytics-client/compare/v1.7.0...v1.8.0) (2024-04-10)
 
 
