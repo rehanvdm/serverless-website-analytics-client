@@ -233,7 +233,15 @@ swaClient.v1.analyticsTrack("svelte", count, "test")
 </script>
 ````
 
-..Any other framework
+#### Angular
+
+See example at: https://github.com/cebert/serverless-web-analytics-demo-spa-application
+
+#### PHP
+
+See example at: https://github.com/wheeleruniverse/wheelerrecommends
+
+#### ..Any other framework
 
 ## Package src
 
