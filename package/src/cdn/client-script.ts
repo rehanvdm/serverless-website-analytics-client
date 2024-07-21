@@ -70,10 +70,10 @@ import * as swaClient from "../";
   if(attrTracking && attrTracking != "false") {
     document.querySelectorAll('button, a').forEach(function(element) {
       element.addEventListener('click', (event) => {
-        if(!event.target)
+        if(!event.currentTarget)
           return;
 
-        const eventTarget = event.target as HTMLElement;
+        const eventTarget = event.currentTarget as HTMLElement;
         const trackEvent = eventTarget.getAttribute('swa-event');
         if(trackEvent) {
           const trackCategory = eventTarget.getAttribute('swa-event-category') || undefined;
